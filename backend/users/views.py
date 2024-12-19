@@ -52,7 +52,7 @@ def sign_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("home")
+            return redirect("profile")
         else:
             messages.error(request, ('Incorrect email or password, please try again.'))
             return render(request, "users/signin.html", {'username':username,
@@ -69,3 +69,13 @@ def sign_out(request):
 @login_required(login_url='signin')
 def profile(request):
     return render(request, "users/profile.html")
+
+
+@login_required(login_url='signin')
+def profile_upload(request):
+    if request.method == "POST" and request.FILES['upload']:
+            upload = request.FILES['upload']
+            request.user.profile.profile_picture = upload
+            request.user.profile.save()
+            return redirect('profile')
+    return render(request, 'users/profileupload.html')
