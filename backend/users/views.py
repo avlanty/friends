@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.contrib import messages
 from .models import Member
@@ -63,3 +64,8 @@ def sign_in(request):
 def sign_out(request):
     logout(request)
     return redirect("home")
+
+
+@login_required(login_url='signin')
+def profile(request):
+    return render(request, "users/profile.html")
