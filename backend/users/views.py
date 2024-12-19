@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.contrib import messages
 from .models import Member
 
 # Create your views here.
 def home(request):
-    return render(request, "users/base.html")
+    return render(request, "users/home.html")
 
 def sign_up(request):
     if request.method == "POST":
@@ -19,7 +19,7 @@ def sign_up(request):
         try:
             Member.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
             messages.success(request, 'Your account has been created. Welcome to Friends!')
-            return redirect("home")
+            return redirect("signin")
         
         except IntegrityError:
             if Member.objects.filter(username=username).exists() or Member.objects.filter(email=email).exists():
@@ -34,7 +34,7 @@ def sign_up(request):
         except Exception:
             messages.error(request, f"You must fill all fields. Please try again.")
             return render(request, "users/signup.html", {'first_name': first_name, 
-                                                        'last_name': last_name, 
+                                                        'last_name': last_name,
                                                         'username': username, 
                                                         'email': email, 
                                                         'password': password
@@ -58,3 +58,8 @@ def sign_in(request):
                                                         'password':password},)
     else:
         return render(request, "users/signin.html")
+    
+
+def sign_out(request):
+    logout(request)
+    return redirect("home")
