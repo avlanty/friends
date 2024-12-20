@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.utils.dateparse import parse_date
 from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.contrib import messages
@@ -72,10 +74,31 @@ def profile(request):
 
 
 @login_required(login_url='signin')
-def profile_upload(request):
-    if request.method == "POST" and request.FILES['upload']:
-            upload = request.FILES['upload']
-            request.user.profile.profile_picture = upload
-            request.user.profile.save()
-            return redirect('profile')
-    return render(request, 'users/profileupload.html')
+def profile_edit(request):
+    if request.method == "POST":
+        upload = request.FILES.get('upload', None)
+        bio = request.POST.get('bio', '')
+        date_of_birth = request.POST.get('date_of_birth', '')
+
+        profile = request.user.profile
+        profile.bio = bio
+
+        if upload:
+            profile.profile_picture = upload
+
+        try:
+            if date_of_birth:
+                parsed_date = parse_date(date_of_birth)
+                if not parsed_date:
+                    raise ValidationError('Invalid date format. Please use YYYY-MM-DD.')
+                profile.date_of_birth = parsed_date
+
+            profile.save()
+            messages.success(request, 'Profile updated!')
+
+        except ValidationError:
+            messages.error(request, 'Error updating profile. Please try again.')
+            return render(request, 'users/profileedit.html', {'bio':bio, 'date_of_birth':date_of_birth, 'upload':upload})
+
+        return redirect('profile')
+    return render(request, 'users/profileedit.html')

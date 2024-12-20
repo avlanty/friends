@@ -1,11 +1,11 @@
 {% extends 'users/base.html' %}
 {% block content %}
     <h1>{{ user.username }}'s profile</h1>
-    {% if user.profile.profile_picture %}
-        <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" width="250" height="250">
-    {% else %}
-        <p>Want to upload a profile picture? <a href="{% url 'upload' %}">Click Here</a></p>    
-    {% endif %}
+    <p><a href="{% url 'edit' %}">Edit Profile</a></p>
+    <br>
+    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" width="250" height="250">    
+    <br>
     <p>Bio: {{ user.profile.bio }}</p>
+    <br>
     <p>Date of Birth: {{ user.profile.date_of_birth }}</p>
 {% endblock %}

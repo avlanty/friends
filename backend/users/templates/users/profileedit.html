@@ -3,6 +3,11 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="upload" id="upload" accept="image/*">
-        <button class="btn" type="submit">Submit</button>
+        <br>
+        <input type="text" name="bio" id="bio" placeholder="Bio">
+        <br>
+        <input type="date" name="date_of_birth" id="date_of_birth">
+        <br>
+        <button class="btn" type="submit">Save</button>
     </form>
 {% endblock %}
