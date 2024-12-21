@@ -1,6 +1,7 @@
-{% extends 'users/base.html' %}
+{% extends 'core/base.html' %}
 {% block content %}
 {% if user.is_authenticated %}
 <p>Welcome, {{user.first_name}}!</p>
+<p><a href="{% url 'createpost' %}">Create Post</a></p>
 {% endif %}
 {% endblock %}
