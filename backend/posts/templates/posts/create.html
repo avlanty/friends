@@ -1,4 +1,9 @@
 {% extends 'core/base.html' %}
 {% block content %}
-    <p>This is the create post page</p>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Tell your friends!" rows="4" cols="50"></textarea>
+        <br>
+        <button class="btn" type="submit">Post</button>
+    </form>
 {% endblock %}
