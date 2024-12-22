@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.contrib import messages
 from .models import Member
+from posts.models import Post, Comment, Like
 
 # Create your views here.
 def home(request):
@@ -70,7 +71,7 @@ def sign_out(request):
 
 @login_required(login_url='signin')
 def profile(request):
-    return render(request, "users/profile.html")
+    return render(request, "users/profile.html", {'posts': Post.objects.filter(user = request.user)})
 
 
 @login_required(login_url='signin')

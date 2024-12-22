@@ -8,4 +8,12 @@
     <p>Bio: {{ user.profile.bio }}</p>
     <br>
     <p>Date of Birth: {{ user.profile.date_of_birth }}</p>
+    <p><a href="{% url 'createpost' %}">Create Post</a></p>
+    {% for post in posts %}
+        {% if user == post.user %}
+            <p>{{ post.content }}</p>
+            <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
+            <a href="{% url 'deletepost' post.id %}">Delete Post</a>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

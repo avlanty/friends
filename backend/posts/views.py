@@ -22,3 +22,16 @@ def create_post(request):
         return redirect("home")
 
     return render(request, "posts/create.html")
+
+
+@login_required(login_url='signin')
+def delete_post(request, post_id):
+    try:
+        post = Post.objects.get(id=post_id)
+        post.delete()
+        messages.success(request, 'Post deleted!')
+
+    except Exception:
+        messages.error(request, 'Failed to delete post, try again.')
+    
+    return redirect("home")
