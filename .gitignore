@@ -62,6 +62,10 @@ db.sqlite3
 db.sqlite3-journal
 media
 
+# React stuff:
+frontend/node_modules
+frontend/build
+
 # Flask stuff:
 instance/
 .webassets-cache

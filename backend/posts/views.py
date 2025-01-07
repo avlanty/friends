@@ -3,8 +3,16 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Post
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from .serializers import PostSerializer
+
 
 # Create your views here.
+# Existing HTML views
+
 @login_required(login_url='signin')
 def create_post(request):
     if request.method == "POST":
@@ -35,3 +43,21 @@ def delete_post(request, post_id):
         messages.error(request, 'Failed to delete post, try again.')
     
     return redirect("home")
+
+
+# New API views
+
+class PostListAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+    def get(self, request):
+        posts = Post.objects.all()
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = PostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
