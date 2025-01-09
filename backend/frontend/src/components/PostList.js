@@ -20,7 +20,8 @@ const PostList = () => {
         <ul>
             {posts.map(post => (
                 <li key={post.id}>
-                    <p>{post.user.username} - {post.content}</p>
+                    <p>{post.content}</p>
+                    <p>Posted by {post.user.username} at {post.created_at}</p>
                 </li>
             ))}
         </ul>

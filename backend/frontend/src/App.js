@@ -1,13 +1,19 @@
 import React from 'react';
-import PostList from './components/PostList';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ProfilePage from './pages/ProfilePage';
+import Header from './components/Header';
 
-function App() {
+const App = () => {
   return (
-    <div classname="App">
-      <p>Welcome to Friends!</p>
-      <PostList />
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/profile" element={<ProfilePage/>}/>
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
